@@ -65,7 +65,7 @@ h1 small{display:block;font-size:12.5px;font-weight:500;color:var(--mut);margin-
 .an p{margin:3px 0}.an b{color:var(--gold)}
 .an.wide{grid-column:1/-1}
 .cw{overflow-x:auto;scrollbar-width:thin}
-.cw svg{display:block;min-width:640px;width:100%;height:auto}
+.cw svg{display:block;min-width:1000px;width:100%;height:auto}
 .hs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:none;margin-top:6px}
 .hs::-webkit-scrollbar{display:none}
 .hc{flex:none;width:74px;padding:10px 4px;border-radius:16px;text-align:center;background:rgba(255,255,255,.08);border:1px solid var(--line);font-size:12px}
@@ -90,6 +90,26 @@ footer a{color:var(--gold)}
 @keyframes up{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media (max-width:420px){.ans{grid-template-columns:1fr}.dr{grid-template-columns:64px 30px 40px 1fr 66px;font-size:13px}}
+.hl{display:grid;grid-template-columns:104px 34px 1fr 52px 50px;gap:6px;align-items:center;padding:9px 0;border-top:1px solid var(--line);font-size:13.5px}
+.hl:first-child{border-top:0}.hl b{font-size:14px}.hl small{display:block;color:var(--mut);font-size:11.5px}.hl .rn{color:var(--blue);text-align:right;font-weight:600}.hl.now{background:rgba(243,197,84,.14);border-radius:12px;padding-left:8px;padding-right:8px}
+.more{display:block;width:100%;margin-top:10px;padding:11px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.08);font-weight:600;font-size:14px}
+.acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.btn{flex:1 1 140px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.1);font-size:15px;font-weight:600;color:var(--tx);transition:transform .12s}
+.btn:active{transform:scale(.97)}
+.btn.pri{border:0;color:#2a1a05;background:linear-gradient(135deg,var(--gold),#ffb36b);font-weight:800}
+.ovl{position:fixed;inset:0;z-index:30;display:none;align-items:flex-end;justify-content:center;background:rgba(6,8,24,.72);backdrop-filter:blur(6px)}
+.ovl.on{display:flex}.full{z-index:35}
+.shs{--tx:#f6f8ff;--mut:#bcc7ee;--line:rgba(255,255,255,.2);width:100%;max-width:560px;max-height:92vh;overflow:auto;background:#1a2150;color:#f6f8ff;border:1px solid var(--line);border-bottom:0;border-radius:28px 28px 0 0;padding:20px 18px calc(18px + env(safe-area-inset-bottom,0px));animation:up .35s cubic-bezier(.2,.9,.3,1.1)}
+.shs h3{margin:0 0 10px;font-size:20px}
+.fm{display:flex;gap:8px}
+.fm .chip{padding:7px 14px}
+.pvw{margin:14px auto;display:grid;place-items:center;min-height:200px;max-height:46vh;border-radius:18px;background:#0006;overflow:hidden;color:var(--mut);font-size:14px}
+.pvw img{display:block;max-width:100%;max-height:46vh;width:auto;height:auto;border-radius:12px;-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
+.full img{display:block;width:100%;height:auto;margin:10px 0;border-radius:14px;-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
+.sg{display:flex;flex-wrap:wrap;gap:10px}
+.hint{font-size:12.5px;color:var(--mut);margin:12px 0}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);z-index:60;max-width:90vw;padding:11px 18px;border-radius:999px;background:#1a2150;color:#f6f8ff;border:1px solid var(--gold);box-shadow:0 10px 30px rgba(0,0,0,.4);font-size:14px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
 </style>
 </head>
 <body class="s-clear">
@@ -106,11 +126,33 @@ footer a{color:var(--gold)}
 <main id="main" hidden>
  <section class="glass hero fade" id="hero"></section>
  <section class="glass sec" id="ans"><h2>สรุปคำถามยอดฮิต</h2><div class="ans" id="ansg"></div></section>
- <section class="glass sec"><h2>24 ชั่วโมงข้างหน้า</h2><div class="cw" id="cw"></div><div class="hs" id="hs"></div></section>
+ <section class="glass sec"><h2>ทุกชั่วโมงข้างหน้า</h2><div class="cw" id="cw"></div><div class="hs" id="hs"></div></section>
+ <section class="glass sec"><h2>รายชั่วโมง (เวลาไทย)</h2><div id="hl"></div><button class="more" id="hm" type="button"></button></section>
  <section class="glass sec"><h2>7 วันข้างหน้า</h2><div id="dy"></div></section>
  <section class="glass sec"><h2>ทุกพื้นที่ตอนนี้ <span class="sub">(แตะเพื่อดู)</span></h2><div class="ov" id="ov"></div></section>
 </main>
 <footer id="ft"></footer>
+<div class="ovl" id="so" role="dialog" aria-modal="true" aria-labelledby="sot">
+ <div class="shs">
+  <h3 id="sot">Share สภาพอากาศ</h3>
+  <div class="fm" role="group" aria-label="ขนาดภาพ"><button class="chip" type="button" data-h="1350" aria-pressed="true">โพสต์ 4:5</button><button class="chip" type="button" data-h="1920" aria-pressed="false">สตอรี่ 9:16</button></div>
+  <div class="pvw" id="pvw">กำลังสร้างภาพ...</div>
+  <div class="sg">
+   <button class="btn pri" id="sn" type="button">📲 แชร์ผ่านเครื่อง</button>
+   <button class="btn" id="ssv" type="button">💾 บันทึกภาพ</button>
+   <button class="btn" id="sci" type="button">🖼️ คัดลอกภาพ</button>
+   <button class="btn" id="sfu" type="button">🔍 ดูภาพเต็ม</button>
+   <button class="btn" id="sln" type="button" data-k="ln">💬 LINE</button>
+   <button class="btn" id="sfb" type="button" data-k="fb">Facebook</button>
+   <button class="btn" id="sx" type="button" data-k="x">X</button>
+   <button class="btn" id="scp" type="button">📋 คัดลอกข้อความ</button>
+  </div>
+  <p class="hint">ส่งเข้า LINE พร้อมรูป: กด "แชร์ผ่านเครื่อง" แล้วเลือก LINE หรือกด "คัดลอกภาพ" แล้ววางในแชท · TikTok / Instagram / YouTube: กด "บันทึกภาพ" (หรือ "ดูภาพเต็ม" แล้วกดค้างที่รูป) แล้วอัปโหลดได้เลยค่ะ</p>
+  <button class="btn" id="sc" type="button">ปิด</button>
+ </div>
+</div>
+<div class="ovl full" id="fv" role="dialog" aria-modal="true" aria-label="ภาพสภาพอากาศเต็ม"><div class="shs"><p class="hint" style="margin-top:0">กดค้างที่รูป แล้วเลือก "บันทึกรูปภาพ" หรือ "เพิ่มลงรูปภาพ" (หรือแคปหน้าจอ) แล้วนำไปโพสต์ได้เลยค่ะ</p><img id="fvi" alt="ภาพสภาพอากาศ"><button class="btn" id="fvc" type="button">ปิด</button></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 </div>
 <script>
 const $=id=>document.getElementById(id);
@@ -127,7 +169,7 @@ const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},se
 let AC=null,soundOn=store.get("chada-w-s")!=="0";
 function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){return null}}if(AC.state==="suspended")AC.resume();return AC}
 function tone(f,d,type,v,delay,to){if(!soundOn)return;const A=ac();if(!A)return;const t=A.currentTime+(delay||0),o=A.createOscillator(),g=A.createGain();o.type=type||"sine";o.frequency.setValueAtTime(f,t);if(to)o.frequency.exponentialRampToValueAtTime(to,t+d);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v||.13,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(A.destination);o.start(t);o.stop(t+d+.03)}
-const SFX={tap(){tone(660,.09,"triangle",.12,0,900)},go(){tone(300,.25,"sine",.1,0,900);tone(600,.2,"triangle",.07,.1,1400)},
+const SFX={snap(){tone(2200,.04,"square",.07);tone(1100,.09,"square",.05,.05)},ok(){[784,1047,1319].forEach((f,i)=>tone(f,.18,"triangle",.12,i*.07))},close(){tone(560,.12,"triangle",.1,0,300)},tap(){tone(660,.09,"triangle",.12,0,900)},go(){tone(300,.25,"sine",.1,0,900);tone(600,.2,"triangle",.07,.1,1400)},
 rain(){[988,784,659,523].forEach((f,i)=>tone(f,.28,"sine",.1,i*.12))},sun(){[659,880,1047,1319].forEach((f,i)=>tone(f,.22,"triangle",.11,i*.08))},hot(){[523,659,784,659].forEach((f,i)=>tone(f,.18,"triangle",.1,i*.09))}};
 /* ---------- helpers ---------- */
 function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
@@ -179,14 +221,14 @@ $("main").hidden=false;
 const uvNow=L.hr.uv[A.a]??0,ui=uvInfo(uvNow),pi=L.pm!=null?pmInfo(L.pm):null,rp=L.hr.pp[A.a]??0;
 $("hero").innerHTML='<div class="hrow"><div><div class="place">📍 '+loc.n+(LIVE?"":' · <b style="color:var(--gold)">ข้อมูลจำลอง</b>')+'</div><div class="temp">'+r0(c.t)+'<sup>°C</sup></div><div class="cond">'+wx(c.code)+'</div><div class="sub">รู้สึกเหมือน '+r0(c.ft)+'° · สูงสุด '+r0(L.dy.max[0])+'° / ต่ำสุด '+r0(L.dy.min[0])+'°</div></div><div class="big" aria-hidden="true">'+ico(c.code,c.day)+'</div></div>'
 +'<div class="stats"><div class="st">โอกาสฝนชั่วโมงนี้<b>'+rp+'%</b></div><div class="st">ความชื้น<b>'+r0(c.rh)+'%</b></div><div class="st">ลม<b>'+r0(c.w)+' กม./ชม.</b></div><div class="st">ดัชนี UV<b>'+r0(uvNow)+'</b><span class="tag" style="background:'+ui[1]+'">'+ui[0]+'</span></div>'
-+(pi?'<div class="st">PM2.5<b>'+r0(L.pm)+' µg/m³</b><span class="tag" style="background:'+pi[1]+'">'+pi[0]+'</span></div>':'<div class="st">PM2.5<b>–</b></div>')+'<div class="st">ฝนวันนี้<b>'+(+L.dy.sum[0]).toFixed(1)+' มม.</b></div></div>';
++(pi?'<div class="st">PM2.5<b>'+r0(L.pm)+' µg/m³</b><span class="tag" style="background:'+pi[1]+'">'+pi[0]+'</span></div>':'<div class="st">PM2.5<b>–</b></div>')+'<div class="st">ฝนวันนี้<b>'+(+L.dy.sum[0]).toFixed(1)+' มม.</b></div></div>'+'<div class="acts"><button class="btn pri" id="bsh" type="button">📤 Share สภาพอากาศ</button><button class="btn" id="bsv" type="button">🖼️ เซฟภาพ</button></div>';$("bsh").onclick=openShare;$("bsv").onclick=()=>saveImg(false);
 /* answers */
 let rainH;if(A.W.length||A.nowRain){rainH=(A.nowRain?"<p><b>ตอนนี้ฝนกำลังตก</b></p>":"")+A.W.slice(0,3).map(w=>"<p><b>"+lbl(L,w.s)+" – "+lbl(L,w.e)+"</b><br><span class='sub'>("+pad(hOf(L.hr.time[w.s]))+":00–"+pad(hOf(L.hr.time[Math.min(w.e,L.hr.time.length-1)]))+":00 น.) โอกาส "+w.p+"%"+(w.mm>=.1?" · ~"+w.mm.toFixed(1)+" มม.":"")+"</span></p>").join("")}else rainH="<p><b>ไม่มีฝน</b>ใน 24 ชม. ข้างหน้า</p><p class='sub'>โอกาสสูงสุด "+A.mp+"%</p>";
 let uvH;if(A.uvh.length){const s=A.uvh[0],e=A.uvh[A.uvh.length-1]+1,ui2=uvInfo(L.hr.uv[A.uvp]);uvH="<p><b>แดดแรง "+thTime(hOf(L.hr.time[s]))+" – "+thTime(hOf(L.hr.time[e]||L.hr.time[e-1]))+"</b></p><p class='sub'>UV สูงสุด "+r0(L.hr.uv[A.uvp])+" ("+ui2[0]+") ทาครีมกันแดด</p>"}else{const m=L.hr.uv[A.uvp]??0;uvH="<p><b>UV "+uvInfo(m)[0]+"</b> (สูงสุด "+r0(m)+")</p><p class='sub'>"+(m<3?"แดดไม่แรงมากวันนี้":"ควรป้องกันแดดเล็กน้อย")+"</p>"}
 $("ansg").innerHTML='<div class="an wide"><h3>☔ ฝนจะตกกี่โมง?</h3>'+rainH+'</div><div class="an"><h3>☀️ แดดแรงช่วงไหน?</h3>'+uvH+'</div><div class="an"><h3>🌡️ ร้อน/เย็นสุดวันนี้</h3><p>ร้อนสุด <b>'+r0(L.hr.t[A.hot])+'°</b><br><span class="sub">'+thTime(hOf(L.hr.time[A.hot]))+'</span></p><p>เย็นสุด <b>'+r0(L.hr.t[A.cool])+'°</b><br><span class="sub">'+thTime(hOf(L.hr.time[A.cool]))+'</span></p></div><div class="an wide"><h3>🌅 พระอาทิตย์</h3><p>ขึ้น <b>'+clk(L.dy.sr[0])+'</b> · ตก <b>'+clk(L.dy.ss[0])+'</b></p></div>';
 /* hourly */
-const n=Math.min(24,L.hr.time.length-A.a);let hs="";for(let k=0;k<n;k++){const i=A.a+k,p=L.hr.pp[i]??0;hs+='<div class="hc'+(k===0?" now":"")+'"><span class="th">'+(k===0?"ตอนนี้":thTime(hOf(L.hr.time[i])))+'</span><span class="e" aria-hidden="true">'+ico(L.hr.code[i],L.hr.day[i])+'</span><b>'+r0(L.hr.t[i])+'°</b><div class="rb"><i style="width:'+p+'%"></i></div><span class="sub">'+p+'%</span></div>'}$("hs").innerHTML=hs;
-$("cw").innerHTML=chart(L,A.a,n);
+const n=Math.min(HN,L.hr.time.length-A.a);let hs="";for(let k=0;k<n;k++){const i=A.a+k,p=L.hr.pp[i]??0;hs+='<div class="hc'+(k===0?" now":"")+'"><span class="th">'+(k===0?"ตอนนี้":thTime(hOf(L.hr.time[i])))+'</span><span class="e" aria-hidden="true">'+ico(L.hr.code[i],L.hr.day[i])+'</span><b>'+r0(L.hr.t[i])+'°</b><div class="rb"><i style="width:'+p+'%"></i></div><span class="sub">'+p+'%</span></div>'}$("hs").innerHTML=hs;
+$("cw").innerHTML=chart(L,A.a,Math.min(24,n));hlist(L,A,n);
 /* daily */
 const mn=Math.min(...L.dy.min),mx=Math.max(...L.dy.max),sp=Math.max(1,mx-mn);let dh="";
 L.dy.time.forEach((t,i)=>{const dt=new Date(t+"T12:00:00"),nm=i===0?"วันนี้":i===1?"พรุ่งนี้":DAYS[dt.getDay()];dh+='<div class="dr"><b>'+nm+'</b><span style="font-size:22px" aria-hidden="true">'+ico(L.dy.code[i],1)+'</span><span class="sub">💧'+(L.dy.pp[i]??0)+'%</span><div class="rg"><i style="left:'+((L.dy.min[i]-mn)/sp*100)+'%;right:'+(100-(L.dy.max[i]-mn)/sp*100)+'%"></i></div><span>'+r0(L.dy.min[i])+'° / <b>'+r0(L.dy.max[i])+'°</b></span></div>'});$("dy").innerHTML=dh;
@@ -194,15 +236,81 @@ L.dy.time.forEach((t,i)=>{const dt=new Date(t+"T12:00:00"),nm=i===0?"วัน�
 $("ov").innerHTML="";LOCS.forEach((l,i)=>{const M=DATA[i],B=ana(M),w=B.nowRain?"ฝนตกอยู่":B.W.length?"ฝน "+lbl(M,B.W[0].s):"ฝนน้อย",b=document.createElement("button");b.type="button";b.className="oc";b.innerHTML="<span><b>"+l.n+"</b><small>"+w+"</small></span><em>"+r0(M.cur.t)+"° "+ico(M.cur.code,M.cur.day)+"</em>";b.onclick=()=>pickLoc(i);$("ov").appendChild(b)});
 $("ft").innerHTML=(LIVE?"ข้อมูลจาก <a href='https://open-meteo.com' target='_blank' rel='noopener noreferrer'>Open-Meteo</a> (แบบจำลองพยากรณ์ผสานข้อมูลดาวเทียม เรดาร์ และสถานีตรวจอากาศ) · ข้อมูลอ้างอิง "+c.time.replace("T"," ")+" น. เวลาประเทศไทย<br>":"")+"ไม่มีการพยากรณ์ใดแม่นยำ 100% ฝนช่วงสั้นๆ อาจคลาดเคลื่อน ตรวจเรดาร์ฝนล่าสุดที่ <a href='https://www.tmd.go.th' target='_blank' rel='noopener noreferrer'>กรมอุตุนิยมวิทยา</a> ประกอบการตัดสินใจ<br>มาสคอต: เลดี้ชฎา";
 if(snd){if(A.nowRain||(A.W.length&&A.W[0].s-A.a<=3))SFX.rain();else if(L.hr.t[A.hot]>=35)SFX.hot();else SFX.sun()}}
-function chart(L,a,n){const W=720,H=190,T=[],P=[];for(let k=0;k<n;k++){T.push(L.hr.t[a+k]);P.push(L.hr.pp[a+k]??0)}const lo=Math.min(...T)-1,hi=Math.max(...T)+1,x=k=>24+k*(W-48)/Math.max(1,n-1),y=t=>26+(hi-t)/(hi-lo)*72;
+function chart(L,a,n){const W=1000,H=190,T=[],P=[];for(let k=0;k<n;k++){T.push(L.hr.t[a+k]);P.push(L.hr.pp[a+k]??0)}const lo=Math.min(...T)-1,hi=Math.max(...T)+1,x=k=>24+k*(W-48)/Math.max(1,n-1),y=t=>26+(hi-t)/(hi-lo)*72;
 let s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="กราฟอุณหภูมิและโอกาสฝน 24 ชั่วโมง">';
 for(let k=0;k<n;k++){const h=P[k]/100*52;s+='<rect x="'+(x(k)-7)+'" y="'+(150-h)+'" width="14" height="'+h+'" rx="4" fill="#6cc0ff" opacity=".75"/>'}
 s+='<polyline fill="none" stroke="#f3c554" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round" points="'+T.map((t,k)=>x(k)+","+y(t)).join(" ")+'"/>';
-for(let k=0;k<n;k+=3){s+='<circle cx="'+x(k)+'" cy="'+y(T[k])+'" r="5" fill="#f3c554"/><text x="'+x(k)+'" y="'+(y(T[k])-12)+'" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">'+r0(T[k])+'°</text><text x="'+x(k)+'" y="176" text-anchor="middle" font-size="13" fill="currentColor" opacity=".8">'+pad(hOf(L.hr.time[a+k]))+':00</text>'+(P[k]>=20?'<text x="'+x(k)+'" y="'+(145-P[k]/100*52)+'" text-anchor="middle" font-size="12" fill="currentColor">'+P[k]+'%</text>':'')}
+for(let k=0;k<n;k++){s+='<circle cx="'+x(k)+'" cy="'+y(T[k])+'" r="5" fill="#f3c554"/><text x="'+x(k)+'" y="'+(y(T[k])-12)+'" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">'+r0(T[k])+'°</text><text x="'+x(k)+'" y="176" text-anchor="middle" font-size="12" fill="currentColor" opacity=".8">'+pad(hOf(L.hr.time[a+k]))+':00</text>'+(P[k]>=20?'<text x="'+x(k)+'" y="'+(145-P[k]/100*52)+'" text-anchor="middle" font-size="12" fill="currentColor">'+P[k]+'%</text>':'')}
 return s+"</svg>"}
 function chipsR(){const c=$("chips");c.innerHTML="";let g=-1;LOCS.forEach((l,i)=>{if(l.g!==g){g=l.g;const s=document.createElement("span");s.className="gl";s.textContent=g?"ปริมณฑล":"กทม.";c.appendChild(s)}const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=l.n;b.setAttribute("aria-pressed",i===cur);b.onclick=()=>pickLoc(i);c.appendChild(b)})}
 function pickLoc(i){if(!DATA)return;SFX.tap();cur=i;store.set("chada-w-l",i);chipsR();render(false);window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"})}
 function status(){const t=nowBKK();lastAt=pad(+t.slice(11,13))+":"+t.slice(14,16);$("stat").innerHTML=LIVE?'<div class="ok"><i></i>ข้อมูลสด · อัปเดตล่าสุด '+lastAt+' น. (รีเฟรชอัตโนมัติทุก 10 นาที)</div>':'<div class="warn" role="alert"><b>⚠️ โหมดตัวอย่าง (ไม่ใช่ข้อมูลจริง)</b><br>หน้านี้เชื่อมต่อแหล่งข้อมูลสภาพอากาศสดไม่ได้ ตัวเลขทั้งหมดเป็นข้อมูลจำลองเพื่อดูหน้าตาแอพเท่านั้น ห้ามใช้ตัดสินใจ — นำไฟล์ไปโฮสต์บนเว็บของคุณเองเพื่อใช้ข้อมูลสดจริง</div>'}
+/* ---------- hourly list ---------- */
+let HN=24;
+function hlist(L,A,n){let s="";for(let k=0;k<n;k++){const i=A.a+k,t=L.hr.time[i],p=L.hr.pp[i]??0,dd=Math.round((new Date(dOf(t))-new Date(dOf(L.cur.time)))/864e5),day=dd<=0?"":dd===1?"พรุ่งนี้ ":"มะรืนนี้ ";
+s+='<div class="hl'+(k===0?" now":"")+'"><div><b>'+(k===0?"ตอนนี้":day+thTime(hOf(t)))+'</b><small>'+pad(hOf(t))+':00 น.</small></div><span style="font-size:24px" aria-hidden="true">'+ico(L.hr.code[i],L.hr.day[i])+'</span><span>'+wx(L.hr.code[i])+'</span><b>'+r0(L.hr.t[i])+'°</b><span class="rn">💧'+p+'%</span></div>'}
+$("hl").innerHTML=s;$("hm").textContent=HN===24?"ดูต่อ 48 ชั่วโมง":"ย่อเหลือ 24 ชั่วโมง"}
+$("hm").onclick=()=>{SFX.tap();HN=HN===24?48:24;if(DATA)render(false)};
+/* ---------- share & image ---------- */
+const SITE=(/^https?:/.test(location.href)&&!/claude\.(ai|com)|claudeusercontent|anthropic/.test(location.hostname))?location.href.split("#")[0]:"https://claude.ai/artifact/EF6qhXYWmMgpmXoLm3Ceqo";
+const MS=["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+let shH=1350,tt=null,prevF2=null,fvPrev=null;const BC=new Map();
+function toast(t){const e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>e.classList.remove("on"),2800)}
+function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+function wrapTh(c,text,maxW,maxL){let segs;try{segs=[...new Intl.Segmenter("th",{granularity:"word"}).segment(text)].map(s=>s.segment)}catch(e){segs=text.split("")}const L=[];let cur="";for(const s of segs){if(c.measureText(cur+s).width>maxW&&cur){L.push(cur.trim());cur=s}else cur+=s}if(cur.trim())L.push(cur.trim());return L.slice(0,maxL)}
+function rainShort(L,A){if(A.nowRain){const w=A.W.find(x=>x.s<=A.a)||A.W[0];return"ตอนนี้ฝนกำลังตก"+(w?" คาดว่าซาประมาณ "+lbl(L,w.e):"")}if(A.W.length){const w=A.W[0];return"ฝนตกช่วง "+lbl(L,w.s)+" – "+lbl(L,w.e)+" (โอกาส "+w.p+"%)"}return"ฝนมีโอกาสน้อยใน 24 ชม. ข้างหน้า ("+A.mp+"%)"}
+function dateTh(){const t=nowBKK(),d=new Date(t.slice(0,10)+"T12:00:00");return"วัน"+DAYS[d.getDay()]+"ที่ "+(+t.slice(8,10))+" "+MS[+t.slice(5,7)-1]+" "+(+t.slice(0,4)+543)+" · "+(+t.slice(11,13))+":"+t.slice(14,16)+" น."}
+function shareText(){const L=DATA[cur],A=ana(L),loc=LOCS[cur],c=L.cur,uv=L.hr.uv[A.a]??0;
+return(LIVE?"":"[ข้อมูลจำลอง ไม่ใช่สภาพอากาศจริง]\n")+ico(c.code,c.day)+" สภาพอากาศ "+loc.n+" · "+dateTh()+"\n"+r0(c.t)+"° "+wx(c.code)+" (รู้สึกเหมือน "+r0(c.ft)+"°)\n☔ "+rainShort(L,A)+"\n🌡️ ร้อนสุด "+r0(L.hr.t[A.hot])+"° "+thTime(hOf(L.hr.time[A.hot]))+" · UV "+r0(uv)+(L.pm!=null?" · PM2.5 "+r0(L.pm):"")+"\nดูพยากรณ์ทุกชั่วโมงที่ "+SITE+"\n#เลดี้ชฎา #พยากรณ์อากาศ"}
+async function makeCard(H){try{await Promise.race([Promise.all([document.fonts.load("800 70px Prompt"),document.fonts.load("700 30px Prompt"),document.fonts.load("500 30px Prompt")]),new Promise(r=>setTimeout(r,1500))])}catch(e){}
+const L=DATA[cur],loc=LOCS[cur],A=ana(L),c=L.cur,W=1080,cv=document.createElement("canvas");cv.width=W;cv.height=H;const x=cv.getContext("2d"),K=H/1350,Y=v=>v*K,cx=W/2,FF="Prompt,'Noto Sans Thai','Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif",TAU=Math.PI*2;
+const SK={"s-clear":["#143a7a","#2f78c9","#f0a95a"],"s-cloud":["#2c3f66","#5d7396","#9aa9c2"],"s-rain":["#171f3d","#2b3962","#43557d"],"s-night":["#0a0924","#1a1550","#36246b"]},P=SK[document.body.className]||SK["s-clear"];
+let g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,P[0]);g.addColorStop(.6,P[1]);g.addColorStop(1,P[2]);x.fillStyle=g;x.fillRect(0,0,W,H);
+const r=rng(hash("w"+loc.id+c.time));if(!c.day){for(let i=0;i<110;i++){x.globalAlpha=.2+r()*.6;x.fillStyle="#fff";x.beginPath();x.arc(r()*W,r()*H,r()*2+.4,0,TAU);x.fill()}x.globalAlpha=1}
+if(RAIN.has(c.code)){x.strokeStyle="rgba(180,215,255,.35)";x.lineWidth=2.5;for(let i=0;i<70;i++){const a=r()*W,b=r()*H;x.beginPath();x.moveTo(a,b);x.lineTo(a-10,b+34);x.stroke()}}
+x.strokeStyle="#f3c554";x.lineWidth=5;rr(x,34,34,W-68,H-68,44);x.stroke();x.globalAlpha=.45;x.lineWidth=1.5;rr(x,54,54,W-108,H-108,34);x.stroke();x.globalAlpha=1;
+[[34,34],[W-34,34],[34,H-34],[W-34,H-34]].forEach(p=>{x.save();x.translate(p[0],p[1]);x.rotate(Math.PI/4);x.fillStyle="#f3c554";x.fillRect(-10,-10,20,20);x.restore()});
+const my=Y(200),R=105,im=document.querySelector(".avatar img");x.save();x.shadowColor="rgba(243,197,84,.8)";x.shadowBlur=36;x.beginPath();x.arc(cx,my,R+7,0,TAU);x.fillStyle="#f3c554";x.fill();x.restore();
+x.save();x.beginPath();x.arc(cx,my,R,0,TAU);x.clip();x.fillStyle="#000";x.fillRect(cx-R,my-R,2*R,2*R);if(im&&im.complete&&im.naturalWidth){const iw=im.naturalWidth,ih=im.naturalHeight,sw=iw*.67;x.drawImage(im,iw*.17,ih*.03,sw,sw,cx-R,my-R,2*R,2*R)}x.restore();
+x.textAlign="center";x.textBaseline="middle";x.fillStyle="#fff";x.shadowColor="rgba(0,0,0,.35)";x.shadowBlur=10;
+x.font="800 64px "+FF;x.fillText("📍 "+loc.n,cx,Y(355));x.font="500 29px "+FF;x.fillText(dateTh(),cx,Y(406));
+x.font="190px "+FF;x.fillText(ico(c.code,c.day),cx-270,Y(528));x.font="800 210px "+FF;x.fillText(r0(c.t)+"°",cx+90,Y(528));
+x.font="700 46px "+FF;x.fillText(wx(c.code),cx,Y(650));x.font="500 29px "+FF;x.fillText("รู้สึกเหมือน "+r0(c.ft)+"° · สูงสุด "+r0(L.dy.max[0])+"° / ต่ำสุด "+r0(L.dy.min[0])+"°",cx,Y(700));x.shadowBlur=0;
+rr(x,70,Y(750),W-140,170,26);x.fillStyle="rgba(8,12,42,.5)";x.fill();x.strokeStyle="rgba(255,255,255,.25)";x.lineWidth=2;x.stroke();
+x.font="700 29px "+FF;x.fillStyle="#f3c554";x.fillText("☔ ฝนจะตกกี่โมง?",cx,Y(790));x.font="600 37px "+FF;x.fillStyle="#fff";wrapTh(x,rainShort(L,A),840,2).forEach((t,i)=>x.fillText(t,cx,Y(848)+i*50));
+rr(x,70,Y(945),W-140,175,26);x.fillStyle="rgba(8,12,42,.5)";x.fill();x.strokeStyle="rgba(255,255,255,.25)";x.stroke();
+for(let k=0;k<6;k++){const i=Math.min(A.a+k,L.hr.time.length-1),bx=70+(W-140)/6*(k+.5),y0=Y(945);x.fillStyle="#f3c554";x.font="600 23px "+FF;x.fillText(k===0?"ตอนนี้":thTime(hOf(L.hr.time[i])),bx,y0+32);x.fillStyle="#fff";x.font="44px "+FF;x.fillText(ico(L.hr.code[i],L.hr.day[i]),bx,y0+80);x.font="800 36px "+FF;x.fillText(r0(L.hr.t[i])+"°",bx,y0+122);x.fillStyle="#9fd6ff";x.font="500 22px "+FF;x.fillText("💧"+(L.hr.pp[i]??0)+"%",bx,y0+152)}
+const uv=L.hr.uv[A.a]??0,ch=["🔆 UV "+r0(uv)+" "+uvInfo(uv)[0],"💧 โอกาสฝน "+(L.hr.pp[A.a]??0)+"%"];if(L.pm!=null)ch.push("😷 PM2.5 "+r0(L.pm));
+x.font="600 25px "+FF;const ws=ch.map(t=>x.measureText(t).width+40),tot=ws.reduce((a,b)=>a+b,0)+12*(ch.length-1);let px=(W-tot)/2;const py=Y(1150);
+ch.forEach((t,i)=>{rr(x,px,py,ws[i],50,25);x.fillStyle="rgba(255,255,255,.18)";x.fill();x.fillStyle="#fff";x.fillText(t,px+ws[i]/2,py+26);px+=ws[i]+12});
+x.font="500 25px "+FF;if(LIVE){x.fillStyle="#e9eeff";x.fillText("อัปเดต "+c.time.slice(11,16)+" น. · ข้อมูล Open-Meteo",cx,Y(1236))}else{x.fillStyle="#ffb36b";x.font="700 27px "+FF;x.fillText("⚠️ ข้อมูลจำลอง ไม่ใช่สภาพอากาศจริง",cx,Y(1236))}
+x.font="700 28px "+FF;x.fillStyle="#f3c554";x.fillText("#เลดี้ชฎา  #พยากรณ์อากาศ",cx,Y(1275));return cv}
+function bkey(){return cur+"-"+DATA[cur].cur.time+"-"+shH+"-"+(LIVE?1:0)}
+async function getBlob(){const k=bkey();if(BC.has(k))return BC.get(k);const cv=await makeCard(shH),b=await new Promise(r=>cv.toBlob(r,"image/png"));if(b){if(BC.size>6)BC.delete(BC.keys().next().value);BC.set(k,b)}return b}
+function fname(){return"lady-chada-weather-"+LOCS[cur].id+"-"+DATA[cur].cur.time.replace(/[:T]/g,"").slice(0,12)+".png"}
+function b2d(b){return new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result);f.onerror=()=>r(null);f.readAsDataURL(b)})}
+async function saveBlob(b){let dl=null,code="no-cap";try{dl=typeof claude!=="undefined"?await claude.use("downloads"):null}catch(e){code="use-err"}if(!dl||!b){if(!dl&&b){try{const u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=fname();document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(u),4000);return{s:"ok"}}catch(e){}}return{s:"none",code}}try{await dl.save({filename:fname(),data:b});return{s:"ok"}}catch(e){const c=(e&&e.code)||"error";return{s:c==="declined"?"declined":"none",code:c}}}
+async function shareFile(b){try{const file=new File([b],fname(),{type:"image/png"});if(!navigator.share||!navigator.canShare||!navigator.canShare({files:[file]}))return false;await navigator.share({files:[file],title:"สภาพอากาศ | เลดี้ชฎา"});return true}catch(e){return!!(e&&e.name==="AbortError")}}
+async function showFull(){const b=await getBlob(),u=b&&await b2d(b);if(!u){toast("แสดงภาพไม่ได้ ลองใหม่อีกครั้งนะคะ");return}$("fvi").src=u;fvPrev=document.activeElement;$("fv").classList.add("on");$("fvc").focus()}
+function closeFull(){if(!$("fv").classList.contains("on"))return;$("fv").classList.remove("on");if(fvPrev&&fvPrev.focus)try{fvPrev.focus()}catch(e){}}
+async function saveImg(){if(!DATA)return;SFX.snap();try{toast("กำลังสร้างภาพ...");const b=await getBlob();if(!b)throw new Error("สร้างภาพไม่ได้");const r=await saveBlob(b);
+if(r.s==="ok"){SFX.ok();toast("บันทึกภาพแล้วค่ะ ✨");return}if(r.s==="declined")return;if(await shareFile(b))return;
+toast("บันทึกตรงไม่ได้ ("+r.code+") เปิดภาพเต็มให้แล้ว กดค้างที่รูปเพื่อบันทึกนะคะ");await showFull()}catch(e){toast("เกิดข้อผิดพลาด: "+((e&&(e.message||e.code))||e))}}
+async function renderPreview(){const box=$("pvw");box.textContent="กำลังสร้างภาพ...";try{const b=await getBlob(),u=b&&await b2d(b);if(!u){box.textContent="สร้างภาพไม่สำเร็จ ลองใหม่อีกครั้งนะคะ";return}const im=document.createElement("img");im.alt="ภาพสภาพอากาศ";im.src=u;box.textContent="";box.appendChild(im)}catch(e){box.textContent="สร้างภาพไม่สำเร็จ ("+((e&&e.message)||"error")+")"}}
+function openShare(){if(!DATA)return;SFX.snap();prevF2=document.activeElement;$("so").classList.add("on");$("sn").hidden=!navigator.share;renderPreview();$("sc").focus()}
+function closeShare(){if(!$("so").classList.contains("on"))return;$("so").classList.remove("on");if(prevF2&&prevF2.focus)try{prevF2.focus()}catch(e){}}
+async function nativeShare(){const b=BC.get(bkey())||await getBlob(),data={title:"สภาพอากาศ | เลดี้ชฎา",text:shareText()};try{if(b){const file=new File([b],fname(),{type:"image/png"});if(navigator.canShare&&navigator.canShare({files:[file]}))data.files=[file]}await navigator.share(data);SFX.ok()}catch(e){if(!e||e.name!=="AbortError")toast("แชร์ตรงไม่ได้ ("+((e&&e.name)||"error")+") ลองปุ่มอื่นนะคะ")}}
+async function copyText(quiet){const t=shareText();let ok=false;try{await navigator.clipboard.writeText(t);ok=true}catch(e){const a=document.createElement("textarea");a.value=t;a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();try{ok=document.execCommand("copy")}catch(e2){}document.body.removeChild(a)}
+if(!quiet){if(ok){SFX.ok();toast("คัดลอกข้อความแล้ว นำไปวางได้เลยค่ะ")}else toast("คัดลอกไม่ได้ ลองเลือกข้อความเองนะคะ")}return ok}
+async function copyImg(){try{const b=await getBlob();await navigator.clipboard.write([new ClipboardItem({"image/png":b})]);SFX.ok();toast("คัดลอกภาพแล้ว ไปวางในแชท LINE ได้เลยค่ะ")}catch(e){toast("เครื่องนี้คัดลอกภาพไม่ได้ ใช้ 'ดูภาพเต็ม' แล้วกดค้างที่รูปแทนนะคะ")}}
+function socialUrl(k){const t=encodeURIComponent(shareText()),u=encodeURIComponent(SITE);return k==="ln"?"https://line.me/R/msg/text/?"+t:k==="fb"?"https://www.facebook.com/sharer/sharer.php?u="+u+"&quote="+t:"https://twitter.com/intent/tweet?text="+t}
+async function social(k){SFX.tap();let w=null;try{w=window.open(socialUrl(k),"_blank")}catch(e){}if(!w){const ok=await copyText(true);toast(ok?"เปิดแอพตรงไม่ได้ คัดลอกข้อความแล้ว เปิดแอพแล้ววางได้เลยค่ะ":"เปิดแอพตรงไม่ได้ ลองปุ่มแชร์ผ่านเครื่องแทนนะคะ")}}
+$("sc").onclick=()=>{SFX.close();closeShare()};$("so").addEventListener("click",e=>{if(e.target===$("so"))closeShare()});
+$("fvc").onclick=closeFull;$("fv").addEventListener("click",e=>{if(e.target===$("fv"))closeFull()});
+$("sn").onclick=nativeShare;$("ssv").onclick=saveImg;$("scp").onclick=()=>copyText(false);$("sci").onclick=copyImg;$("sfu").onclick=showFull;
+["sln","sfb","sx"].forEach(i=>$(i).onclick=()=>social($(i).dataset.k));
+document.querySelectorAll(".fm .chip").forEach(b=>b.onclick=()=>{SFX.tap();shH=+b.dataset.h;document.querySelectorAll(".fm .chip").forEach(x=>x.setAttribute("aria-pressed",x===b));renderPreview()});
+document.addEventListener("keydown",e=>{if(!$("so").classList.contains("on")&&!$("fv").classList.contains("on"))return;if(e.key==="Escape"){$("fv").classList.contains("on")?closeFull():closeShare()}if(e.key==="Tab"){const top=$("fv").classList.contains("on")?$("fv"):$("so"),f=[...top.querySelectorAll("button")].filter(x=>!x.hidden&&x.offsetParent!==null);if(!f.length)return;const i=f.indexOf(document.activeElement);if(e.shiftKey&&i<=0){e.preventDefault();f[f.length-1].focus()}else if(!e.shiftKey&&(i===f.length-1||i===-1)){e.preventDefault();f[0].focus()}}});
 let busy=false;
 async function load(manual){if(busy)return;busy=true;$("rf").classList.add("spin");if(manual)SFX.go();
 try{DATA=await fetchLive();LIVE=true}catch(e){DATA=demo();LIVE=false}
